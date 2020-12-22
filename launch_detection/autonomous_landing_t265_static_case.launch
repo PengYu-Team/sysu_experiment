@@ -35,21 +35,25 @@
 		<rosparam command="load" file="$(find sysu_experiment)/config/prometheus_control_config/px4_sender.yaml"/>
 	</node>
 
-	<!-- run the web_cam.cpp -->
-    <node pkg="prometheus_detection" type="web_cam" name="web_cam" output="screen">
-        <param name="cam_id" type="int" value="0" />
-        <param name="cam_h" type="int" value="0" />
-        <param name="cam_w" type="int" value="0" />
-		<param name="resize_h" type="int" value="0" />
-        <param name="resize_w" type="int" value="0" />
+    <include file="$(find sysu_experiment)/launch_detection/rs_t265.launch">
+	  <arg name="enable_fisheye1" value="true"/>
+	  <arg name="enable_fisheye2" value="true"/>
+	  <arg name="fisheye_fps" value="30"/>
+	  <arg name="publish_odom_tf" value="false"/>
+	  <arg name="enable_gyro" value="false"/>
+	  <arg name="enable_accel" value="false"/>
+	  <arg name="enable_pose" value="false"/>
+    </include>
+
+    <node pkg="prometheus_detection_landing" type="fisheye_undistort.py" name="fisheye_undistort" output="screen">
+		<remap from="/camera/fisheye1/image_raw" to="/camera_t265/fisheye1/image_raw" />
     </node>
 
-	<!-- run the landpad_det.cpp -->
-    <node pkg="prometheus_detection" type="landpad_det" name="landpad_det" output="screen">
-        <param name="camera_topic" type="string" value="/prometheus/camera/rgb/image_raw" />
-        <param name="camera_info" type="string" value="camera_param.yaml" />
+	<node pkg="prometheus_detection" type="landpad_det" name="landpad_det" output="screen">
+        <param name="camera_topic" type="string" value="/camera/fisheye1/image_undistort" />
+        <param name="camera_info" type="string" value="camera_param_t265.yaml" />
     </node>
-	
+
 	<!-- run the autonomous_landing.cpp -->
 	<node pkg="prometheus_mission" type="autonomous_landing" name="autonomous_landing" output="screen" launch-prefix="gnome-terminal --">
 		<!-- 仿真模式 - 区别在于是否自动切换offboard模式 -->
