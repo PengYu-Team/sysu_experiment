@@ -1,12 +1,11 @@
 ## parameter for px4_sender.cpp
 
 ## 起飞高度,建议设置小一点
-## 2020.11.04测试发现飞机起飞有较大超调，未发现原因，但起飞后控制正常
-Takeoff_height : 0.5
+Takeoff_height : 1.0
 ## 降落速度
 Land_speed : 0.2
 ##　上锁高度
-Disarm_height : 0.25
+Disarm_height : 0.2
 
 ##　地理围栏，根据实际情况设置
 geo_fence:
@@ -15,4 +14,4 @@ geo_fence:
   y_min: -2.5
   y_max: 2.5
   z_min: -0.2
-  z_max: 1.5
+  z_max: 1.6

@@ -1,0 +1,71 @@
+<launch>
+	<!-- 启动MAVROS -->
+	<node pkg="mavros" type="mavros_node" name="mavros" output="screen">
+		<!-- 不同机载电脑,注意修改fcu_url至正确的端口号及波特率 -->
+		<param name="fcu_url" value="/dev/ttyUSB0:921600" />
+		<param name="gcs_url" value="" />
+		<param name="target_system_id" value="1" />
+		<param name="target_component_id" value="1" />
+		<rosparam command="load" file="$(find sysu_experiment)/config/mavros_config/px4_pluginlists.yaml" />
+		<rosparam command="load" file="$(find sysu_experiment)/config/mavros_config/px4_config.yaml" />
+	</node>
+
+	<!-- vrpn -->
+	<include file="$(find vrpn_client_ros)/launch/sample.launch">
+		<arg name="server" value="192.168.1.2"/>
+	</include>
+
+	<!-- run the px4_pos_estimator.cpp -->
+	<node pkg="prometheus_control" type="px4_pos_estimator" name="px4_pos_estimator" output="screen">
+		<!-- 0 for vicon， 1 for 激光SLAM, 2 for gazebo ground truth(仿真用) -->
+		<param name="input_source" value="0" />
+		<!-- 如果使用动作捕捉系统，则指定刚体名称，用于订阅vrpn节点发布的话题 -->
+		<param name="object_name" value="UAV"/>
+	</node>
+	
+	<!-- run the px4_sender.cpp -->
+	<node pkg="prometheus_control" type="px4_sender" name="px4_sender" output="screen">
+		<rosparam command="load" file="$(find sysu_experiment)/config/prometheus_control_config/px4_sender.yaml"/>
+	</node>
+
+	<!-- run the web_cam.cpp -->
+    <node pkg="prometheus_detection" type="web_cam" name="web_cam" output="screen">
+        <param name="cam_id" type="int" value="0" />
+        <param name="cam_h" type="int" value="0" />
+        <param name="cam_w" type="int" value="0" />
+		<param name="resize_h" type="int" value="0" />
+        <param name="resize_w" type="int" value="0" />
+    </node>
+
+	<!-- run the landpad_det.cpp -->
+    <node pkg="prometheus_detection" type="landpad_det" name="landpad_det" output="screen">
+        <param name="camera_topic" type="string" value="/prometheus/camera/rgb/image_raw" />
+        <param name="camera_info" type="string" value="camera_param.yaml" />
+    </node>
+	
+	<!-- run the autonomous_landing.cpp -->
+	<node pkg="prometheus_mission" type="autonomous_landing" name="autonomous_landing" output="screen" launch-prefix="gnome-terminal --">
+		<!-- 仿真模式 - 区别在于是否自动切换offboard模式 -->
+		<param name="sim_mode" value="false" />
+		<!-- 悬停模式 - 仅用于观察检测结果 -->
+		<param name="hold_mode" value="false" />
+		<!-- 是否使用降落板绝对高度 -->
+		<param name="use_pad_height" value="true" />
+		<param name="pad_height" value="0.01" />
+		<!-- 起始点 -->
+		<param name="start_point_x" value="0.0" />
+		<param name="start_point_y" value="0.0" />
+		<param name="start_point_z" value="1.5" />
+		<!-- 追踪控制参数 -->
+		<param name="kpx_land" value="0.1" />
+		<param name="kpy_land" value="0.1" />
+		<param name="kpz_land" value="0.08" />
+		<param name="arm_height_to_ground" value="0.2" />
+		<param name="arm_distance_to_pad" value="0.3" />
+		<!-- 目标是否移动及其速度 -->
+		<param name="moving_target" value="false" />
+		<param name="target_vel_x" value="0.0" />
+		<param name="target_vel_y" value="0.0" />
+	</node>
+</launch>
+
