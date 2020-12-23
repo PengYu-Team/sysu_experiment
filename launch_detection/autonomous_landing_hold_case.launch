@@ -58,7 +58,7 @@
 		<param name="hold_mode" value="true" />
 		<!-- 是否使用降落板绝对高度 -->
 		<param name="use_pad_height" value="true" />
-		<param name="pad_height" value="0.01" />
+		<param name="pad_height" value="0.35" />
 		<!-- 起始点 -->
 		<param name="start_point_x" value="0.0" />
 		<param name="start_point_y" value="0.0" />

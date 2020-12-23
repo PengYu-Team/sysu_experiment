@@ -1,10 +1,10 @@
 <launch>
-	<!-- run the sender_ground_station.cpp -->
-	<node pkg="prometheus_control" type="sender_ground_station" name="sender_ground_station" output="screen">	
+	<!-- run the ground_station.cpp -->
+	<node pkg="prometheus_station" type="ground_station" name="ground_station" output="screen" launch-prefix="gnome-terminal --tab --">	
 	</node>
 
 	<!-- run the ground_station_msg.cpp -->
-	<node pkg="prometheus_control" type="ground_station_msg" name="ground_station_msg" output="screen" launch-prefix="gnome-terminal --tab --">	
+	<node pkg="prometheus_station" type="ground_station_msg" name="ground_station_msg" output="screen" launch-prefix="gnome-terminal --tab --">	
 	</node>
 
 	<node pkg="prometheus_mission" type="mission_cmd_pub" name="mission_cmd_pub" output="screen" launch-prefix="gnome-terminal --tab --">	
