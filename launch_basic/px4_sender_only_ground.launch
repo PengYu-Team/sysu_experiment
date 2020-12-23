@@ -1,6 +1,6 @@
-<!-- 本launch为使用px4_sender进行地面远程控制时的启动脚本 -->
-<!-- 无人机仅配备数传及飞控，不配备机载电脑 -->
 <launch>
+	<!-- 本launch为使用px4_sender进行地面远程控制时的启动脚本 -->
+	<!-- 无人机仅配备数传及飞控，不配备机载电脑 -->
 	<!-- 启动MAVROS -->
 	<!-- 不同机载电脑,注意修改fcu_url至正确的端口号及波特率 -->
 	<node pkg="mavros" type="mavros_node" name="mavros" output="screen">
@@ -23,7 +23,7 @@
 		<!-- 0 for vicon， 1 for 激光SLAM, 2 for gazebo ground truth(仿真用) -->
 		<param name="input_source" value="0" />
 		<!-- 如果使用动作捕捉系统，则指定刚体名称，用于订阅vrpn节点发布的话题 -->
-		<param name="object_name" value="UAV"/>
+		<param name="object_name" value="UAV1"/>
 		<!-- 运行频率 Hz -->
 		<param name="rate_hz" value="50.0"/>
 		<!-- 定位设备偏移量 -->
@@ -52,7 +52,7 @@
 	</node>	
 
 	<!-- run the rviz -->
-	<arg name="visualization" default="false"/>
+	<arg name="visualization" default="true"/>
 	<group if="$(arg visualization)">
 		<node type="rviz" name="rviz" pkg="rviz" args="-d $(find sysu_experiment)/config/rviz_config/rviz_controller_test.rviz" />
     </group>
