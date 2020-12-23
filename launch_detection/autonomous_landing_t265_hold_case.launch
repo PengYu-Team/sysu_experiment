@@ -49,7 +49,6 @@
 		<remap from="/camera/fisheye1/image_raw" to="/camera_t265/fisheye1/image_raw" />
     </node>
 
-
 	<!-- /prometheus/camera/rgb/image_raw -->
     <node pkg="prometheus_detection" type="landpad_det" name="landpad_det" output="screen">
         <param name="camera_topic" type="string" value="/camera/fisheye1/image_undistort" />
@@ -57,7 +56,7 @@
     </node>
 
 	<!-- run the autonomous_landing.cpp -->
-	<node pkg="prometheus_mission" type="autonomous_landing" name="autonomous_landing" output="screen" launch-prefix="gnome-terminal --">
+	<node pkg="prometheus_mission" type="autonomous_landing" name="autonomous_landing" output="screen">
 		<!-- 仿真模式 - 区别在于是否自动切换offboard模式 -->
 		<param name="sim_mode" value="false" />
 		<!-- 悬停模式 - 仅用于观察检测结果 -->
