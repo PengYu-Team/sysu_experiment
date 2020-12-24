@@ -26,10 +26,10 @@
 		<param name="object_name" value="UAV1"/>
 		<!-- 运行频率 Hz -->
 		<param name="rate_hz" value="50.0"/>
-		<!-- 定位设备偏移量 -->
+		<!-- 定位设备偏移量,无人机放置于原点时,vicon所显示的位置值 -->
 		<param name="offset_x" value="0.0"/>
 		<param name="offset_y" value="0.0"/>
-		<param name="offset_z" value="0.0"/>
+		<param name="offset_z" value="0.15"/>
 		<param name="offset_yaw" value="0.0"/>
 	</node>
 	
